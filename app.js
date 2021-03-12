@@ -1,5 +1,3 @@
-//jshint esversion:6
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -22,103 +20,72 @@ app.use(express.static("public"));
 mongoose.connect('mongodb+srv://admin-yash:Yash123@cluster0-1lje1.mongodb.net/LostFound', {useNewUrlParser: true, useUnifiedTopology: true});
 
 
-const sellSchema = {
+const lostSchema = {
   name: String,
-  itemName: String,
-  quantity: String,
-  price: String,
-  address: String,
-  phone: String,
   email: String,
-  description: String,
-  image: String,
-  category: String
+  phone: String,
+  category: String,
+  props: String
 }
 
-const demandSchema = {
-  itemName: String,
-  itemBrand: String,
-  itemQuantity: String,
-  itemPrice: String,
-  itemDescription: String,
+const foundSchema = {
   name: String,
-  phone: String,
   email: String,
-  address: String
+  phone: String,
+  category: String,
+  props: String
 }
 
-const Sell = mongoose.model("Sell", sellSchema);
-const Demand = mongoose.model("Demand", demandSchema);
-const Phone = mongoose.model("Phone", sellSchema);
-const Computer = mongoose.model("Computer", sellSchema);
-const Laptop = mongoose.model("Laptop", sellSchema);
-const Electronic = mongoose.model("Electronic", sellSchema);
-const Drafter = mongoose.model("Drafter", sellSchema);
-const Labcoat = mongoose.model("Labcoat", sellSchema);
-const Other = mongoose.model("Other", sellSchema);
+const Lost = mongoose.model("Lost", lostSchema);
+const Found = mongoose.model("Found", foundSchema);
+const Electronics = mongoose.model("Electronics", lostSchema);
+const Vehicle = mongoose.model("Vehicle", lostSchema);
+const Wallet = mongoose.model("Wallet", lostSchema);
+const Briefcase = mongoose.model("Briefcase", lostSchema);
+const Card = mongoose.model("Card", lostSchema);
+const Other = mongoose.model("Other", lostSchema);
 
 
 app.get("/", function(req, res){
-  Sell.find({}, function(err, personSell){
+  Lost.find({}, function(err, lostItems){
     res.render("home", {
       startingContent: homeStartingContent,
-      personSell: personSell
+      personSell: lostItems
       });
   });
 });
 
 
-app.get("/personSell", function(req, res){
-  res.render("personSell");
+app.get("/lostForm", function(req, res){
+  res.render("lostForm");
 });
 
 app.get("/manual", function(req, res){
   res.render("manual");
 });
 
-app.get("/demands", function(req, res){
-  Demand.find({}, function(err, personBuy){
-    res.render("demands", {personBuy: personBuy});
+app.get("/lost", function(req, res){
+  Lost.find({}, function(err, lostItems){
+    res.render("lostItems", {personBuy: lostItems});
   });
 });
 
-app.get("/consumer", function(req, res){
-  res.render("consumer");
+app.get("/found", function(req, res){
+  Found.find({}, function(err, foundItems){
+    res.render("foundItems", {personBuy: foundItems});
+  });
+});
+
+app.get("/foundForm", function(req, res){
+  res.render("foundForm");
 });
 
 app.get("/category", function(req, res){
   res.render("category");
 });
 
-app.get("/phones", function(req, res){
-  Phone.find({}, function(err, phones){
-    res.render("categoryDetail", {
-      item: phones,
-      name: "MOBILES"
-    });
-  });
-});
-
-app.get("/computers", function(req, res){
-  Computer.find({}, function(err, computers){
-    res.render("categoryDetail", {
-      item: computers,
-      name: "COMPUTERS"
-    });
-  });
-});
-
-app.get("/laptops", function(req, res){
-  Laptop.find({}, function(err, laptops){
-    res.render("categoryDetail", {
-      item: laptops,
-      name: "LAPTOPS"
-    });
-  });
-});
-
 app.get("/electronics", function(req, res){
-  Electronic.find({}, function(err, electronics){
+  Electronics.find({}, function(err, electronics){
     res.render("categoryDetail", {
       item: electronics,
       name: "ELECTRONICS"
@@ -126,20 +93,38 @@ app.get("/electronics", function(req, res){
   });
 });
 
-app.get("/drafters", function(req, res){
-  Drafter.find({}, function(err, drafters){
+app.get("/vehicles", function(req, res){
+  Vehicle.find({}, function(err, vehicles){
     res.render("categoryDetail", {
-      item: drafters,
-      name: "DRAFTERS"
+      item: vehicles,
+      name: "VEHICLES"
     });
   });
 });
 
-app.get("/labCoats", function(req, res){
-  Labcoat.find({}, function(err, labCoats){
+app.get("/wallets", function(req, res){
+  Wallet.find({}, function(err, wallets){
     res.render("categoryDetail", {
-      item: labCoats,
-      name: "LABCOATS"
+      item: wallets,
+      name: "WALLETS"
+    });
+  });
+});
+
+app.get("/briefcases", function(req, res){
+  Briefcase.find({}, function(err, briefcases){
+    res.render("categoryDetail", {
+      item: briefcases,
+      name: "BRIEFCASES"
+    });
+  });
+});
+
+app.get("/cards", function(req, res){
+  Card.find({}, function(err, cards){
+    res.render("categoryDetail", {
+      item: cards,
+      name: "CARDS"
     });
   });
 });
@@ -154,145 +139,94 @@ app.get("/others", function(req, res){
 });
 
 
-app.post("/personSell", function(req, res){
+app.post("/lostForm", function(req, res){
   const type = req.body.category;
-  const sell = new Sell({
+  const lostItem = new Lost({
     name: req.body.personName,
-    itemName: req.body.itemName,
-    quantity: req.body.itemQuantity,
-    price: req.body.itemPrice,
-    address: req.body.personAddress,
-    phone: req.body.personPhone,
     email: req.body.PersonEmail,
-    description: req.body.itemDescription,
-    image: req.body.itemImage,
-    category: req.body.category
+    phone: req.body.personPhone,   
+    category: req.body.category,
+    props: req.body.props
   });
-  sell.save(function(err){
+
+  lostItem.save(function(err){
     if(!err){
-      console.log(Sell);
+      console.log("success");
     }
   });
-  if(type == "phones"){
-    const phone = new Phone({
+
+  if(type == "electronics"){
+    const electronics = new Electronics({
       name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
-      phone: req.body.personPhone,
       email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
+      phone: req.body.personPhone,
+      category: req.body.category,
+      props: req.body.props
     });
-    phone.save(function(err){
+    electronics.save(function(err){
       if(!err){
-        console.log(Phone);
+        console.log("success");
       }
     })
-  }  else if(type == "computers"){
-    const computer = new Computer({
+  }  else if(type == "vehicles"){
+    const vehicle = new Vehicle({
       name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
-      phone: req.body.personPhone,
       email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
+      phone: req.body.personPhone,
+      category: req.body.category,
+      props: req.body.props
     });
-    computer.save(function(err){
+    vehicle.save(function(err){
       if(!err){
-        console.log(Computer);
+        console.log(Vehicle);
       }
     })
   } else if(type == "laptops"){
-    const laptop = new Laptop({
+    const wallet = new Wallet({
       name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
-      phone: req.body.personPhone,
       email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
+      phone: req.body.personPhone,
+      category: req.body.category,
+      props: req.body.props
     });
-    laptop.save(function(err){
+    wallet.save(function(err){
       if(!err){
-        console.log(Laptop);
+        console.log(Wallet);
       }
     })
-  } else if(type == "electronics"){
-    const electronic = new Electronic({
+  } else if(type == "briefcases"){
+    const briefcase = new Briefcase({
       name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
-      phone: req.body.personPhone,
       email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
+      phone: req.body.personPhone,
+      category: req.body.category,
+      props: req.body.props
     });
-    electronic.save(function(err){
+    briefcases.save(function(err){
       if(!err){
-        console.log(Electronic);
+        console.log(Briefcase);
       }
     })
-  } else if(type == "drafters"){
-    const drafter = new Drafter({
+  } else if(type == "cards"){
+    const card = new Card({
       name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
-      phone: req.body.personPhone,
       email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
-    });
-    drafter.save(function(err){
-      if(!err){
-        console.log(Drafter);
-      }
-    })
-  } else if(type == "labCoats"){
-    const labcoat = new Labcoat({
-      name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
       phone: req.body.personPhone,
-      email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
+      category: req.body.category,
+      props: req.body.props
     });
-    labcoat.save(function(err){
+    card.save(function(err){
       if(!err){
-        console.log(Labcoat);
+        console.log(Card);
       }
     })
   } else {
     const other = new Other({
       name: req.body.personName,
-      itemName: req.body.itemName,
-      quantity: req.body.itemQuantity,
-      price: req.body.itemPrice,
-      address: req.body.personAddress,
-      phone: req.body.personPhone,
       email: req.body.PersonEmail,
-      description: req.body.itemDescription,
-      image: req.body.itemImage,
-      category: req.body.category
+      phone: req.body.personPhone,
+      category: req.body.category,
+      props: req.body.props
     });
     other.save(function(err){
       if(!err){
@@ -303,21 +237,17 @@ app.post("/personSell", function(req, res){
   res.redirect("/");
 });
 
-app.post("/demands", function(req, res){
-  const demand = new Demand({
-    itemName: req.body.itemName,
-    itemBrand: req.body.itemBrand,
-    itemQuantity: req.body.itemQuantity,
-    itemPrice: req.body.itemPrice,
-    itemDescription: req.body.itemDescription,
-    name: req.body.yourName,
-    phone: req.body.yourPhone,
-    email: req.body.yourEmail,
-    address: req.body.yourAddress
+app.post("/foundForm", function(req, res){
+  const found = new Found({
+      name: req.body.personName,
+      email: req.body.PersonEmail,
+      phone: req.body.personPhone,
+      category: req.body.category,
+      props: req.body.props
   });
-  demand.save(function(err){
+  found.save(function(err){
     if(!err){
-      res.redirect("/demands");
+      res.redirect("/found");
     }
   })
 });

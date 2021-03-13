@@ -1,57 +1,38 @@
 <%- include("partials/header") -%>
 
-
-
-
-
 <div class="home-header">
 
       <div class="home-h4">
-      <h4>Plathera of <%= name %></h4>
+      <h4>Special Section of only <%= name %></h4>
       </div>
       <hr>
 
-      <div class="row cards-row">
-      <% if(item.length == 0){ %>
-        <div class="col-lg-6 col-sm-12">
-          <div class="">
-            <img class="error-img" src="https://images.unsplash.com/photo-1532003885409-ed84d334f6cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt="">
-          </div>
+      <div class="col-lg-12">
+        <div class="not-found">
+        <% if(name == "ELECTRONICS"){ %>
+          <img class="error-img" src="https://images.unsplash.com/photo-1486611367184-17759508999c?ixid=MXwxMjA3fDB8MHxzZWFyY2h8N3x8ZWxlY3Ryb25pY3N8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+        <% } else if(name == "VEHICLES"){ %>
+          <img class="error-img" src="https://images.unsplash.com/photo-1605798410801-e7680bf2cdc8?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTZ8fHZlaGljbGVzfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+          <% } else if(name == "WALLETS"){ %>
+            <img class="error-img" src="https://images.unsplash.com/photo-1560472355-536de3962603?ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mnx8d2FsbGV0c3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+            <% } else if(name == "BRIEFCASES"){ %>
+              <img class="error-img" src="https://images.unsplash.com/photo-1547949003-9792a18a2601?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YmFnc3xlbnwwfHwwfA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+              <% } else if(name == "CARDS"){ %>
+                <img class="error-img" src="https://images.unsplash.com/photo-1591030434469-3d78c7b17820?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MXx8YXRtJTIwY2FyZHN8ZW58MHx8MHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+                <% } else if(name == "OTHER PRODUCTS"){ %>
+                  <img class="error-img" src="https://images.unsplash.com/photo-1520288366719-b7df7237b0d1?ixid=MXwxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhc3VhbCUyMHN0dWZmfGVufDB8fDB8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="">
+                  <% } %>
+          
+        
         </div>
-        <div class="col-lg-6 col-sm-12">
-          <div class="not-found">
-            <h4>Sorry :(<br>
-            This Section is Empty.<br>
-            Try Searching or Post <br>
-            Your Demand <br>
-            </h4>
-            <button href="" type="button" class="btn actual-btn btn-lg btn-outline-info"><a class="consumer-button" href="/consumer">POST NOW</a></button>
-          </div>
-        </div>
-
-        <%} else {%>
-
-
-        <% item.forEach(function(item, index){ %>
-
-        <div class="col-lg-3 col-sm-12">
-          <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="<%= item.image %>">
-          <div class="card-body">
-          <h5 class="card-title"><%=item.itemName%></h5>
-          <h5 class="card-title">Catgory: <%= item.category %></h5>
-          <h5 class="card-text">₹ <%= item.price %> only</h5>
-          <a href="/products/<%=item.itemName%>" class="btn btn-primary anchor-button">Show More</a>
-          </div>
-         </div>
       </div>
 
-
-      <% }) %>
-      <%}%>
+      <div class="col-lg-12">
+        <div class="not-found">
+          <h4>We have a total of <%= number %> items of <%= name %> in our database. Search for yours now</h4>
+          <button href="" type="button" class="btn actual-btn btn-lg btn-outline-info"><a class="consumer-button" href="/lostForm">File A Report</a></button>
+        </div>
       </div>
-
-
       </div>
 
 

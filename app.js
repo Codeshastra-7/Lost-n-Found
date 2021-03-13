@@ -162,7 +162,7 @@ app.post("/lostForm", function(req, res){
   });
 
   Found.find({}, function(err, foundItems){
-    const proc= spawn('python', ['Similarity.py',"red wallet", 'redmi note6']);
+    const proc= spawn('python', ['NLTK similarity.py',"red wallet", 'redmi note6']);
     proc.stdout.on("data", (data) => {
       num = parseFloat(data.toString());
       console.log(data.toString());

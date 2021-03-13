@@ -1,3 +1,3 @@
 # Lost'n'Found
-A Web Application
+A Full-Stack Web Application
 

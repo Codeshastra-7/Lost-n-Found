@@ -6,6 +6,7 @@ const _ = require("lodash");
 const multer = require('multer');
 var fs = require('fs');
 var path = require('path');
+const {spawn} = require('child_process');
 // const upload = multer({dest: __dirname + '/uploads/images'});
 // const fileUpload = require('express-fileupload');
 const methodOverride = require('method-override');
@@ -149,7 +150,7 @@ app.get("/others", function(req, res){
   });
 });
 
-
+let num=0;
 app.post("/lostForm", function(req, res){
   const type = req.body.category;
   const lostItem = new Lost({
@@ -159,6 +160,16 @@ app.post("/lostForm", function(req, res){
     category: req.body.category,
     props: req.body.props
   });
+
+  Found.find({}, function(err, foundItems){
+    const proc= spawn('python', ['Similarity.py',"red wallet", 'redmi note6']);
+    proc.stdout.on("data", (data) => {
+      num = parseFloat(data.toString());
+      console.log(data.toString());
+    });
+    //console.log(pyProg);
+  });
+  
 
   lostItem.save(function(err){
     if(!err){

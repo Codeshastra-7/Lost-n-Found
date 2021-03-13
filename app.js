@@ -46,14 +46,18 @@ const Card = mongoose.model("Card", lostSchema);
 const Other = mongoose.model("Other", lostSchema);
 
 
+// app.get("/", function(req, res){
+//   Lost.find({}, function(err, lostItems){
+//     res.render("home", {
+//       startingContent: homeStartingContent,
+//       personSell: lostItems
+//       });
+//   });
+// });
+
 app.get("/", function(req, res){
-  Lost.find({}, function(err, lostItems){
-    res.render("home", {
-      startingContent: homeStartingContent,
-      personSell: lostItems
-      });
+    res.render("carousel");
   });
-});
 
 
 

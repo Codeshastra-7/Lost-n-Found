@@ -1,6 +1,23 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+#testimonials {
+  text-align: center;
+  background-color: #45B39D;
+}
+.testimonial-text {
+  color: white;
+  font-weight: bold;
+  padding: 0 10% 0 10%;
+}
+
+.testimonial-image {
+  width: 50%;
+  margin: 3%;
+}
+.carousel-item {
+  padding: 3% 10% 3% 10%;
+}
 .home-h4 {
   text-align: center;
   margin-top: 20px;
@@ -185,7 +202,7 @@ body {
 .footer {
   background-color: #002E6E;
   color: white;
-  margin-top: 10%;
+  margin-top: 10px;
   padding-top: 20px;
   width: 100%;
 }

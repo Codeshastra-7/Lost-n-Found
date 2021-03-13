@@ -61,16 +61,8 @@ const Other = mongoose.model("Other", lostSchema);
 
 
 app.get("/", function(req, res){
-  Lost.find({}, function(err, lostItems){
-    res.render("home", {
-      startingContent: homeStartingContent,
-      personSell: lostItems
-      });
-  });
+    res.render("carousel");
 });
-
-
-
 
 app.get("/lostForm", function(req, res){
   res.render("lostForm");
@@ -104,6 +96,7 @@ app.get("/electronics", function(req, res){
   Electronics.find({}, function(err, electronics){
     res.render("categoryDetail", {
       item: electronics,
+      number: electronics.length,
       name: "ELECTRONICS"
     });
   });
@@ -113,6 +106,7 @@ app.get("/vehicles", function(req, res){
   Vehicle.find({}, function(err, vehicles){
     res.render("categoryDetail", {
       item: vehicles,
+      number: vehicles.length,
       name: "VEHICLES"
     });
   });
@@ -122,6 +116,7 @@ app.get("/wallets", function(req, res){
   Wallet.find({}, function(err, wallets){
     res.render("categoryDetail", {
       item: wallets,
+      number: wallets.length,
       name: "WALLETS"
     });
   });
@@ -131,6 +126,7 @@ app.get("/briefcases", function(req, res){
   Briefcase.find({}, function(err, briefcases){
     res.render("categoryDetail", {
       item: briefcases,
+      number: briefcases.length,
       name: "BRIEFCASES"
     });
   });
@@ -140,6 +136,7 @@ app.get("/cards", function(req, res){
   Card.find({}, function(err, cards){
     res.render("categoryDetail", {
       item: cards,
+      number: cards.length,
       name: "CARDS"
     });
   });
@@ -149,6 +146,7 @@ app.get("/others", function(req, res){
   Other.find({}, function(err, others){
     res.render("categoryDetail", {
       item: others,
+      number: others.length,
       name: "OTHER PRODUCTS"
     });
   });

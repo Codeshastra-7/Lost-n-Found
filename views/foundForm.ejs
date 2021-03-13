@@ -3,13 +3,13 @@
 <section id="sell">
   <h4 class="sell-head">PLEASE REPORT FOUND ITEMS HERE</h4>
   <hr>
-  
+
    <div class="sell-div">
-    <form class="" action="/foundForm" method="post">
+    <form class="" action="/foundForm" method="post"  enctype="multipart/form-data">
       <div class="select-category">
         <h5>SELECT CATEGORY</h5>
         <br>
-  
+
         <div class="row">
           <div class="col-lg-6 col-sm-12">
             <input type="radio" id="electronics" name="category" value="electronics">
@@ -41,9 +41,19 @@
       <div class="product-details">
         <h5>INCLUDE SOME DETAILS</h5>
         <br>
-  
-        <label>PRODUCT DESCRIPTION</label>
-        <textarea class="sell-input form-control" name="props" rows="5" cols="30"></textarea>
+            <script type="text/javascript">
+            function ShowAlert() {
+              alert ("You can describe what that item is(example-Purse,watch),the color of the product,brand(if any),the place where you found the item,the things you found along with that item(if any) and any other relevant information you feel about that item.");
+            }
+            </script>
+
+            <label>PRODUCT DESCRIPTION</label>
+            <button style="margin-left:250px" onclick="ShowAlert()" class="btn sell-btn btn-danger" type="button">What to describe</button>
+            <textarea class="sell-input form-control" name="props" rows="5" cols="30"></textarea>
+            <div class="form-group">
+            <label for="image">Upload Image</label>
+            <input type="file" id="image" name="profile" class="form-control-file" value="">
+            </div>
       </div>
       <hr>
       <div class="seller-details">
@@ -51,10 +61,10 @@
         <br>
         <label>YOUR NAME</label>
         <input class="sell-input form-control" type="text" name="personName" autocomplete="off">
- 
+
         <label>YOUR PHONE NUMBER</label>
         <input class="sell-input form-control" type="text" name="personPhone" autocomplete="off">
- 
+
         <label>YOUR EMAIL</label>
         <input class="sell-input form-control" type="email" name="PersonEmail" autocomplete="off">
      </div>
@@ -64,7 +74,7 @@
      </div>
   </form>
   </div>
-  
+
 </section>
 
 <%- include("partials/footer") -%>

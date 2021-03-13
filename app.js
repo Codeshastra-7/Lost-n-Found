@@ -3,6 +3,12 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+const multer = require('multer');
+var fs = require('fs');
+var path = require('path');
+// const upload = multer({dest: __dirname + '/uploads/images'});
+// const fileUpload = require('express-fileupload');
+const methodOverride = require('method-override');
 
 const homeStartingContent = "This is a collabarative site for developers and coders who often and obviously get stuck at a point during their development journey.This platform can help those who are seeking answers and those who are able to give correct answers."
 const aboutContent = "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Non diam phasellus vestibulum lorem sed. Platea dictumst quisque sagittis purus sit. Egestas sed sed risus pretium quam vulputate dignissim suspendisse. Mauris in aliquam sem fringilla. Semper risus in hendrerit gravida rutrum quisque non tellus orci. Amet massa vitae tortor condimentum lacinia quis vel eros. Enim ut tellus elementum sagittis vitae. Mauris ultrices eros in cursus turpis massa tincidunt dui.";
@@ -12,9 +18,10 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(methodOverride('_method'));
 app.use(express.static("public"));
-
+// app.use(fileUpload());
 
 
 mongoose.connect('mongodb+srv://admin-yash:Yash123@cluster0-1lje1.mongodb.net/LostFound', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -32,6 +39,10 @@ const foundSchema = {
   name: String,
   email: String,
   phone: String,
+  image:{
+     type: String,
+     default: 'placeholder.jpg',
+    },
   category: String,
   props: String
 }
@@ -44,6 +55,9 @@ const Wallet = mongoose.model("Wallet", lostSchema);
 const Briefcase = mongoose.model("Briefcase", lostSchema);
 const Card = mongoose.model("Card", lostSchema);
 const Other = mongoose.model("Other", lostSchema);
+
+
+
 
 
 app.get("/", function(req, res){
@@ -146,7 +160,7 @@ app.post("/lostForm", function(req, res){
   const lostItem = new Lost({
     name: req.body.personName,
     email: req.body.PersonEmail,
-    phone: req.body.personPhone,   
+    phone: req.body.personPhone,
     category: req.body.category,
     props: req.body.props
   });
@@ -239,19 +253,39 @@ app.post("/lostForm", function(req, res){
   res.redirect("/");
 });
 
-app.post("/foundForm", function(req, res){
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/images')
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now()+ file.originalname);
+    }
+});
+
+// var upload = multer({ dest: 'uploads/' })
+
+const upload = multer({ storage: storage ,
+  limits: { fieldSize: 10 * 1024 * 1024 }
+});
+
+app.post("/foundForm",upload.single("profile"),function(req, res){
+  console.log(req.file);
   const found = new Found({
       name: req.body.personName,
       email: req.body.PersonEmail,
       phone: req.body.personPhone,
+      image:req.file.filename,
       category: req.body.category,
       props: req.body.props
   });
-  found.save(function(err){
-    if(!err){
-      res.redirect("/found");
-    }
-  })
+  try {
+   found.save();
+
+   res.redirect("/");
+ } catch (error) {
+   console.log(error);
+ }
 });
 
 app.post("/search", function(req, res){

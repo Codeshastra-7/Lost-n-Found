@@ -289,53 +289,69 @@ app.post("/foundForm",upload.single("profile"),function(req, res){
 app.post("/search", function(req, res){
   const requestedItem = _.lowerCase(req.body.search);
   let x = 0;
-  Sell.find({}, function(err, personSell){
-    personSell.forEach(function(item){
-      const storedTitle = _.lowerCase(item.itemName);
+  let string = "";
+  let count = 0;
+  Lost.find({}, function(err, lostItems){
+    lostItems.forEach(function(item){
+      const storedTitle = _.lowerCase(item.category);
       if (storedTitle === requestedItem) {
-        res.render("product", {
-          SellerName: item.name,
-          ItemName: item.itemName,
-          Quantity: item.quantity,
-          Price: item.price,
-          Address: item.address,
-          Phone: item.phone,
-          Email: item.email,
-          Description: item.description,
-          Image: item.image,
-          Category: item.category
-        });
+        if(storedTitle === "electronics"){
+          Electronics.find({}, function(err, electronics){
+            res.render("categoryDetail", {
+              name: "ELECTRONICS",
+              number: electronics.length
+            });
+          })
+        } else if(storedTitle === "vehicles") {
+          Vehicle.find({}, function(err, vehicles){
+            res.render("categoryDetail", {
+              name: "VEHICLES",
+              number: vehicles.length
+            });
+          })
+        } else if(storedTitle === "wallets") {
+          Wallet.find({}, function(err, wallets){
+            res.render("categoryDetail", {
+              name: "WALLETS",
+              number: wallets.length
+            });
+          })
+        } else if(storedTitle === "briefcases") {
+          Briefcase.find({}, function(err, briefcases){
+            res.render("categoryDetail", {
+              name: "BRIEFCASES",
+              number: briefcases.length
+            });
+          })
+        } else if(storedTitle === "cards") {
+          Card.find({}, function(err, cards){
+            res.render("categoryDetail", {
+              name: "CARDS",
+              number: cards.length
+            });
+          })
+        } else {
+          Other.find({}, function(err, others){
+            res.render("categoryDetail", {
+              name: "OTHER PRODUCTS",
+              number: others.length
+            });
+          })
+        }
         x=1;
       }
     });
-    if(x==0){
-      res.render("notFound");
+    if(x==0) {
+      Other.find({}, function(err, others){
+        res.render("categoryDetail", {
+          name: "OTHER PRODUCTS",
+          number: others.length
+        });
+      });     
     }
   });
 });
 
-app.get("/products/:productName", function(req, res){
-  const requestedItem = req.params.productName;
-  Sell.find({}, function(err, personSell){
-    personSell.forEach(function(item){
-      const mainName = item.itemName;
-      if(mainName === requestedItem){
-        res.render("product", {
-          SellerName: item.name,
-          ItemName: item.itemName,
-          Quantity: item.quantity,
-          Price: item.price,
-          Address: item.address,
-          Phone: item.phone,
-          Email: item.email,
-          Description: item.description,
-          Image: item.image,
-          Category: item.category
-        });
-      }
-    });
-  });
-});
 
 let port = process.env.PORT;
 if (port == null || port == "") {

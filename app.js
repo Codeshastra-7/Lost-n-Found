@@ -57,9 +57,6 @@ const Card = mongoose.model("Card", lostSchema);
 const Other = mongoose.model("Other", lostSchema);
 
 
-
-
-
 app.get("/", function(req, res){
     res.render("carousel");
 });
@@ -195,7 +192,7 @@ app.post("/lostForm", function(req, res){
         console.log(Vehicle);
       }
     })
-  } else if(type == "laptops"){
+  } else if(type == "wallets"){
     const wallet = new Wallet({
       name: req.body.personName,
       email: req.body.PersonEmail,
@@ -216,7 +213,7 @@ app.post("/lostForm", function(req, res){
       category: req.body.category,
       props: req.body.props
     });
-    briefcases.save(function(err){
+    briefcase.save(function(err){
       if(!err){
         console.log(Briefcase);
       }
